@@ -89,15 +89,16 @@ class QuestionView extends Component {
         withCredentials: true
       },
       crossDomain: true,
-      success: (result) => {
+      success: result => {
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,
-          currentCategory: result.current_category })
+          currentCategory: result.current_category
+        });
         return;
       },
-      error: (error) => {
-        alert('Unable to load questions. Please try your request again')
+      error: error => {
+        alert("Unable to load questions. Please try your request again")
         return;
       }
     })
@@ -109,11 +110,11 @@ class QuestionView extends Component {
         $.ajax({
           url: `/questions/${id}`, //TODO: update request URL
           type: "DELETE",
-          success: (result) => {
+          success: result => {
             this.getQuestions();
           },
-          error: (error) => {
-            alert('Unable to load questions. Please try your request again')
+          error: error => {
+            alert("Unable to load questions. Please try your request again")
             return;
           }
         })
