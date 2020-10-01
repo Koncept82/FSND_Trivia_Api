@@ -78,13 +78,13 @@ class QuestionView extends Component {
     });
   };
 
-  submitSearch = (searchTerm) => {
+  submitSearch = searchTerm => {
     $.ajax({
-      url: `/questions`, //TODO: update request URL
+      url: `/questions/search`, //TODO: update request URL
       type: "POST",
-      dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify({searchTerm: searchTerm}),
+      dataType: "json",
+      contentType: "application/json",
+      data: JSON.stringify({ searchTerm: searchTerm }),
       xhrFields: {
         withCredentials: true
       },
@@ -98,11 +98,11 @@ class QuestionView extends Component {
         return;
       },
       error: error => {
-        alert("Unable to load questions. Please try your request again")
+        alert("Unable to load questions. Please try your request again");
         return;
       }
-    })
-  }
+    });
+  };
 
   questionAction = (id) => (action) => {
     if(action === 'DELETE') {
@@ -147,23 +147,21 @@ class QuestionView extends Component {
         </div>
         <div className="questions-list">
           <h2>Questions</h2>
-            {this.state.questions.map((q, ind) => (
-              <Question
-                key={q.id}
-                question={q.question}
-                answer={q.answer}
-                category={
-                  this.state.categories.find(x => {
-                    return x.id === q.category;
-                  }).type
-                }
-                difficulty={q.difficulty}
-                questionAction={this.questionAction(q.id)}
-              />
-            ))}
-          <div className="pagination-menu">
-            {this.createPagination()}
-          </div>
+          {this.state.questions.map((q, ind) => (
+            <Question
+              key={q.id}
+              question={q.question}
+              answer={q.answer}
+              category={
+                this.state.categories.find(x => {
+                  return x.id === q.category;
+                }).type
+              }
+              difficulty={q.difficulty}
+              questionAction={this.questionAction(q.id)}
+            />
+          ))}
+          <div className="pagination-menu">{this.createPagination()}</div>
         </div>
 
       </div>
