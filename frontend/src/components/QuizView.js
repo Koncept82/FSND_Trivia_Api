@@ -12,7 +12,7 @@ class QuizView extends Component {
         quizCategory: null,
         previousQuestions: [], 
         showAnswer: false,
-        categories: {},
+        categories: [],
         numCorrect: 0,
         currentQuestion: {},
         guess: '',
@@ -24,15 +24,15 @@ class QuizView extends Component {
     $.ajax({
       url: `/categories`, //TODO: update request URL
       type: "GET",
-      success: (result) => {
+      success: result => {
         this.setState({ categories: result.categories })
         return;
       },
-      error: (error) => {
-        alert('Unable to load categories. Please try your request again')
+      error: error => {
+        alert("Unable to load categories. Please try your request again")
         return;
       }
-    })
+    });
   }
 
   selectCategory = ({type, id=0}) => {
@@ -70,11 +70,11 @@ class QuizView extends Component {
         })
         return;
       },
-      error: (error) => {
-        alert('Unable to load question. Please try your request again')
+      error: error => {
+        alert("Unable to load question. Please try your request again")
         return;
       }
-    })
+    });
   }
 
   submitGuess = (event) => {
@@ -84,8 +84,8 @@ class QuizView extends Component {
     this.setState({
       numCorrect: !evaluate ? this.state.numCorrect : this.state.numCorrect + 1,
       showAnswer: true,
-    })
-  }
+    });
+  };
 
   restartGame = () => {
     this.setState({
@@ -96,23 +96,37 @@ class QuizView extends Component {
       currentQuestion: {},
       guess: '',
       forceEnd: false
-    })
-  }
+    });
+  };
 
   renderPrePlay(){
       return (
           <div className="quiz-play-holder">
               <div className="choose-header">Choose Category</div>
               <div className="category-holder">
-                  <div className="play-category" onClick={this.selectCategory}>ALL</div>
-                  {Object.keys(this.state.categories).map(id => {
+                  <div className="play-category" onClick={this.selectCategory}>
+                    ALL
+                  </div>
+                  {this.state.categories.map(category => {
                   return (
                     <div
-                      key={id}
-                      value={id}
+                      key={category.id}
+                      value={category.id}
                       className="play-category"
-                      onClick={() => this.selectCategory({type:this.state.categories[id], id})}>
-                      {this.state.categories[id]}
+                      onClick={() =>
+                        this.selectCategory({
+                          type: this.state.categories.find(x => {
+                            return x.id === category.id;
+                          }).type,
+                          id: category.id
+                        })
+                      }
+                      >
+                      {
+                        this.state.categories.find(x => {
+                          return x.id === category.id;
+                        }).type
+                      }
                     </div>
                   )
                 })}
