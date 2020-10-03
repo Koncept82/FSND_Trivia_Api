@@ -62,7 +62,7 @@ def create_app(test_config=None):
   ten questions per page and pagination at the bottom of the screen for three pages.
   Clicking on the page numbers should update the questions. 
   '''
-  def paginate_questions(request, selection):
+  def paginated_questions(request, selection):
     page = request.args.get('page', 1, type=int)
     start = (page-1) * QUESTIONS_PER_PAGE
     end = start + QUESTIONS_PER_PAGE
@@ -74,7 +74,7 @@ def create_app(test_config=None):
   def get_questions():
 
       selection = Question.query.all()
-      questions = paginate_questions(request, selection)
+      questions = paginated_questions(request, selection)
 
       if len(questions) == 0:
           abort(404)
